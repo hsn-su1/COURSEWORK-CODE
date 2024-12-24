@@ -172,15 +172,6 @@
             flex-direction: column;
         }
 
-
-
-        textbox {
-            position: absolute; /* This makes it positioned relative to .chat-box */
-            bottom: 0;
-            left: 0;
-            width: 100%;
-        }
-
         textarea {
             margin: 15px;
             padding: 20px;
@@ -326,19 +317,19 @@
             {% endif %}
         {% endfor %}
 
-        <textbox>
-            <textarea name="text" placeholder="Send a chat" oninput="this.style.height = 0px; this.style.height = this.scrollHeight +'px'" id="the-message-to-send"></textarea>
-            <button id="send-message-button">Send</button>
-        </textbox>
+
+        <textarea name="text" placeholder="Send a chat" oninput="this.style.height = 0px; this.style.height = this.scrollHeight +'px'" id="the-message-to-send"></textarea>
+        <button id="send-message-button">Send</button>
+
 
     </div>
 
 
     <script> 
 
-        const person_id = {{ person.id }} ;
+        const person_id = "{{ person.id }}" ;
 
-        const url = ws://127.0.0.1:8000/websocket/${person_id} ;  
+        const url = `ws://127.0.0.1:8000/websocket/${person_id}` ;  
         const chat_websocket = new WebSocket(url) ;     
 
         const message_area = document.getElementById("messages-area") ;
@@ -348,7 +339,7 @@
 
             chat_websocket.send({"type":"text","message":"${text_area.value}"}) ;
 
-            message_area.insertAdjacentHTML("beforeend", <section class="to">
+            message_area.insertAdjacentHTML("beforeend", `<section class="to">
                 <div class="details">
                     <p>2024-01-30</p>
                     <div class="status"><div></div><div></div></div>
@@ -357,7 +348,7 @@
                 <div class="message">
                     <p style="overflow-wrap: anywhere;">${text_area.value}</p>
                 </div>
-            </section> ) 
+            </section> `) 
             
             text_area.value = "" ;
 
@@ -368,7 +359,7 @@
 
             if (received_data.type_of_data == "text") {
 
-                message_area.insertAdjacentHTML("beforeend",  <section class="from">
+                message_area.insertAdjacentHTML("beforeend", `<section class="from">
                     <div class="details">
                         <p>2024-01-30</p>
                         <p>10:55:02</p>
@@ -376,7 +367,7 @@
                     <div class="message">
                         <p style="overflow-wrap: anywhere;">${received_data.data}</p>
                     </div>
-                </section>) 
+                </section>`) 
 
                 chat_websocket.send({"type":"i_have_seen_the_messages"}) ;
 
